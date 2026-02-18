@@ -2,683 +2,415 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>রমজান ২০২৬ (বাংলাদেশ) – স্মার্ট ক্যালেন্ডার</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রমজান ২০২৬ - খুলনা সময়সূচী ও হাদিস</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/77374630?v=4" type="image/x-icon">
-    <meta name="title" content="রমজান ২০২৬ বাংলাদেশ | ইফতার ও সেহরি সময়সূচি, হাদিস ও ইবাদাত ক্যালেন্ডার">
-    <meta name="description" content="বাংলাদেশ সময় অনুযায়ী রমজান ২০২৬ ক্যালেন্ডার – প্রথম রোজা ১৯ ফেব্রুয়ারি, প্রতিদিনের ইফতার ও সেহরির সময়, আজকের হাদিস, জাকাত ক্যালকুলেটর, ইবাদাত ট্র্যাকার।">
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri&display=swap');
         
         :root {
-            --night-sky: #020617;
-            --moon-glow: #fef3c7;
-            --accent-color: #10b981;
+            --khulna-primary: #0f172a;
+            --rahmat: #10b981;
+            --magfirat: #f59e0b;
+            --najat: #ef4444;
         }
 
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background-color: var(--night-sky);
+            background-color: var(--khulna-primary);
             color: #e2e8f0;
-            overflow-x: hidden;
             background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, #020617 70%);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
         }
 
-        .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-            z-index: 0;
-            opacity: 0.5;
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
         }
 
-        /* Interactive Floating Moon */
-        .moon-container {
-            position: relative;
-            width: 70px;
-            height: 70px;
-            filter: drop-shadow(0 0 15px var(--accent-color));
-            animation: float 5s ease-in-out infinite;
-            z-index: 60;
-            flex-shrink: 0;
-        }
-        @media (min-width: 768px) {
-            .moon-container { width: 80px; height: 80px; }
-        }
-
-        .moon-shape {
-            width: 100%;
-            height: 100%;
-            background: var(--moon-glow);
-            clip-path: circle(50% at 50% 50%);
+        .tab-btn {
+            transition: all 0.3s ease;
             position: relative;
         }
-
-        .moon-shape::after {
+        
+        .tab-btn.active::after {
             content: '';
             position: absolute;
-            width: 90%;
-            height: 90%;
-            background: var(--night-sky);
-            border-radius: 50%;
-            top: -5%;
-            right: -15%;
-            transition: all 0.5s;
+            bottom: -2px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: currentColor;
+            border-radius: 2px;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-12px) rotate(5deg); }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
+        .pulse { animation: pulse-soft 2s infinite; }
 
-        .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+        .theme-rahmat { --accent: var(--rahmat); }
+        .theme-magfirat { --accent: var(--magfirat); }
+        .theme-najat { --accent: var(--najat); }
+        
+        .accent-text { color: var(--accent); }
+        .accent-bg { background-color: var(--accent); }
 
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px -8px var(--accent-color);
-        }
-
-        .nav-item { transition: all 0.3s ease; }
-        .nav-item.active { color: var(--accent-color); transform: scale(1.05); }
-
-        .theme-rahmah { --accent-color: #10b981; --moon-glow: #dcfce7; }
-        .theme-magfirah { --accent-color: #f59e0b; --moon-glow: #fef3c7; }
-        .theme-najat { --accent-color: #ef4444; --moon-glow: #fee2e2; }
-
-        .progress-circle {
-            transition: stroke-dashoffset 1s ease-in-out;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        .calculator-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            font-size: 16px; /* prevents zoom on mobile */
-        }
-
-        .calculator-input:focus {
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
-        }
-
-        .check-btn {
-            width: 28px; height: 28px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
-            margin: 0 auto;
-        }
-        .check-btn.done { background: var(--accent-color); border-color: var(--accent-color); }
-
-        .loading-spinner {
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .hadith-glow { box-shadow: 0 0 12px -4px var(--accent-color); }
-
-        /* mobile tap targets */
-        button, .nav-item, .check-btn, select { touch-action: manipulation; }
-        select { font-size: 16px; }
-        input, textarea { font-size: 16px; }
-
-        /* responsive calendar table */
-        .cal-table { min-width: 600px; }
-        @media (max-width: 640px) {
-            .cal-table th, .cal-table td { padding: 0.75rem 0.5rem; font-size: 0.75rem; }
-        }
-
-        /* bottom nav padding for notches */
-        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0.5rem); }
+        /* Custom scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
-<body class="theme-rahmah pb-36 md:pb-32">
+<body class="pb-24 theme-rahmat" id="body-tag">
 
-    <div class="stars"></div>
-
-    <!-- Header & Interactive Clock -->
-    <header class="relative z-50 p-4 md:p-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-4 w-full md:w-auto">
-            <!-- Floating Moon -->
-            <div class="moon-container">
-                <div class="moon-shape"></div>
+    <!-- Donate Modal -->
+    <div id="donate-modal" class="fixed inset-0 bg-slate-950/98 z-[210] hidden flex items-center justify-center p-3 backdrop-blur-3xl">
+        <div class="glass-card w-full max-w-md rounded-[2.5rem] p-6 text-center space-y-5 text-white max-h-[90vh] overflow-y-auto border-white/20">
+            <img src="https://freelogopng.com/images/all_img/1656235223bkash-logo.png" class="h-8 mx-auto" alt="bKash">
+            <p class="text-xs opacity-70">bKash নাম্বারে <b>Send Money</b> করুন</p>
+            <p id="bkash-number" class="text-base font-bold mt-2 opacity-90 bg-white/10 rounded-xl p-3 cursor-pointer select-all">ক্লিক করুন</p>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
+                <blockquote class="text-base font-semibold leading-relaxed">“এই ক্যালেন্ডারটি কারো ইফতারের সময় নিশ্চিত করার একটি ছোট চেষ্টা।”</blockquote>
+                <p class="text-xs opacity-70">এক কাপ কফির দামে একজন পথশিশুর ইফতার নিশ্চিত করুন।</p>
+                <div class="w-12 h-[1px] bg-white/20 mx-auto"></div>
             </div>
-            
-            <div class="flex-1 min-w-0">
-                <h1 id="app-title" class="font-bold text-xl md:text-2xl tracking-tight truncate">রহমতের দশক | رحمة</h1>
-                <p id="arabic-status" class="Amiri text-emerald-400 text-sm md:text-base leading-tight opacity-80">রমজানের প্রথম দশক — আল্লাহর বিশেষ দয়া</p>
-                <p class="text-[10px] uppercase tracking-widest opacity-40 mt-0.5">রমজান মুবারক 🤍</p>
-                <p class="text-[10px] uppercase tracking-widest opacity-40">আল্লাহ আপনার রোজা কবুল করুন</p>
+            <p class="text-sm font-semibold opacity-80">দানের উদ্দেশ্য</p>
+            <div class="grid grid-cols-1 gap-2">
+                <button onclick="showNumber('01911594822', 'এতিমখানায় সহায়তা')" class="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-[#e2136e] transition-all font-bold text-sm">এতিমখানায় সহায়তা</button>
+                <button onclick="showNumber('01400300234', 'মসজিদ নির্মাণ')" class="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-[#e2136e] transition-all font-bold text-sm">মসজিদ নির্মাণ</button>
+                <button onclick="showNumber('01717196469', 'ইফতার পথশিশুদের')" class="p-3 bg-[#e2136e]/20 border border-[#e2136e]/40 rounded-xl hover:bg-[#e2136e] transition-all font-bold text-sm">ইফতার পথশিশুদের ☕</button>
             </div>
+            <p id="donation-purpose" class="text-xs opacity-70 italic"></p>
+            <button onclick="closeDonateModal()" class="text-[11px] uppercase opacity-60 font-black tracking-widest hover:text-rose-400">বন্ধ করুন</button>
         </div>
+    </div>
 
-        <!-- progress / countdown card: responsive row -->
-        <div class="glass-card px-4 py-2 md:px-6 md:py-3 rounded-full flex items-center gap-2 md:gap-4 border-emerald-500/30 w-full md:w-auto justify-between md:justify-start">
-            <div class="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
-                <svg viewBox="0 0 36 36" class="w-full h-full">
-                    <circle cx="18" cy="18" r="16" fill="none" class="stroke-slate-800" stroke-width="2"></circle>
-                    <circle id="progress-ring" cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2" 
-                        stroke-dasharray="100" stroke-dashoffset="100" class="progress-circle text-emerald-500"></circle>
-                </svg>
-                <div class="absolute inset-0 flex items-center justify-center text-[8px] md:text-[10px] font-bold" id="fasting-progress">০%</div>
-            </div>
-            <div class="text-right flex-1 min-w-0">
-                <p class="text-[8px] md:text-[10px] uppercase opacity-50 tracking-widest whitespace-nowrap">ইফতার বাকি</p>
-                <p class="text-base md:text-lg font-black font-mono" id="countdown-timer">--:--:--</p>
-            </div>
+    <header class="max-w-4xl mx-auto p-6 flex flex-col items-center text-center">
+        <div class="mb-4">
+            <span id="stage-badge" class="accent-bg text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-emerald-900/20">
+                রহমতের দশক (১-১০ রমজান)
+            </span>
         </div>
+        <h1 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">রমজান ক্যালেন্ডার ২০২৬</h1>
+        <p class="Amiri accent-text text-xl" id="stage-arabic">رحمة الله الواسعة</p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-3 md:px-4 space-y-6 relative z-10">
+    <main class="max-w-4xl mx-auto px-4 space-y-6">
         
-        <!-- Daily Hadith -->
-        <section id="daily-hadith-card" class="glass-card rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border-emerald-500/20 hadith-glow relative overflow-hidden group">
-            <div class="absolute -right-8 -top-8 text-emerald-500/10 text-8xl transform rotate-12 transition-transform group-hover:rotate-0 duration-700">
-                <i class="fas fa-quote-right"></i>
-            </div>
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-3">
-                    <span class="w-6 h-[2px] bg-emerald-500"></span>
-                    <h3 class="text-[9px] uppercase font-bold tracking-[0.2em] text-emerald-400">🌸 আজকের হাদিস</h3>
+        <!-- Live Countdown Card -->
+        <section class="glass-card p-8 border-white/10 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-moon text-6xl"></i></div>
+            <h3 class="text-sm uppercase tracking-widest opacity-60 mb-4" id="countdown-label">ইফতারের বাকি সময়</h3>
+            <div id="countdown-display" class="text-5xl md:text-7xl font-mono font-black text-white mb-4">00:00:00</div>
+            <div class="flex flex-wrap justify-center gap-4 text-xs font-bold">
+                <div class="px-5 py-3 bg-white/5 rounded-2xl border border-white/10 flex flex-col items-center">
+                    <span class="opacity-50 text-[9px] uppercase mb-1">আজকের সেহরি</span>
+                    <span id="today-sehri" class="accent-text text-lg tracking-wider">--:--</span>
                 </div>
-                <div id="hadith-content" class="space-y-2">
-                    <p id="hadith-text" class="text-base md:text-lg font-medium leading-relaxed italic">"রমজানের শুরু রহমত, মধ্যভাগ মাগফিরাত এবং শেষভাগ জাহান্নাম থেকে মুক্তি।"</p>
-                    <p id="hadith-ref" class="text-xs opacity-50 font-bold">— বায়হাকী, মিশকাত</p>
+                <div class="px-5 py-3 bg-white/5 rounded-2xl border border-white/10 flex flex-col items-center">
+                    <span class="opacity-50 text-[9px] uppercase mb-1">আজকের ইফতার</span>
+                    <span id="today-iftar" class="text-rose-400 text-lg tracking-wider">--:--</span>
                 </div>
             </div>
         </section>
 
-        <!-- Zakat Calculator -->
-        <section class="glass-card rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border-emerald-500/20">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+        <!-- Daily Hadith Card -->
+        <section class="glass-card p-6 border-white/10 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-book-open accent-text"></i> আজকের নির্বাচিত হাদিস
+                </h3>
+                <span id="hadith-day-label" class="text-[10px] opacity-50 font-bold uppercase tracking-tighter">রমজান --</span>
+            </div>
+            <div id="hadith-content" class="text-[14px] md:text-base text-slate-200 leading-relaxed bg-white/5 p-5 rounded-2xl border border-white/5 italic custom-scroll">
+                হাদিস লোড হচ্ছে...
+            </div>
+            <div id="hadith-ref" class="mt-3 text-[11px] text-right accent-text font-bold opacity-80"></div>
+        </section>
+
+        <!-- Donation Button -->
+        <div class="flex justify-center">
+            <button onclick="openDonateModal()" class="glass-card py-3 px-8 border-[#e2136e]/30 hover:bg-[#e2136e]/10 transition-all flex items-center gap-3 group">
+                <span class="w-8 h-8 rounded-full bg-[#e2136e] flex items-center justify-center text-white shadow-lg shadow-[#e2136e]/20 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-heart text-xs"></i>
+                </span>
+                <span class="text-sm font-bold tracking-tight">একজন পথশিশুর ইফতার নিশ্চিত করুন</span>
+            </button>
+        </div>
+
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="glass-card p-6 flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-                        <i class="fas fa-calculator text-emerald-400"></i> 💰 জাকাত ক্যালকুলেটর
-                    </h2>
-                    <p class="text-[10px] opacity-50">সহজভাবে হিসাব করুন—২.৫%</p>
+                    <p class="text-[10px] uppercase opacity-50 font-bold tracking-widest">আজকের তারিখ</p>
+                    <h4 id="current-date-bn" class="text-xl font-bold">-- ফেব্রুয়ারি ২০২৬</h4>
                 </div>
-                <div class="bg-white/5 px-3 py-1.5 rounded-xl border border-white/10 text-right">
-                    <span class="text-[10px] opacity-60 block uppercase">নিসাব (রূপা)</span>
-                    <span class="text-xs md:text-sm font-bold text-emerald-400">৳ ৮০,০০০+</span>
+                <div class="text-right border-l border-white/10 pl-6">
+                    <p class="text-[10px] uppercase opacity-50 font-bold tracking-widest">হিজরি তারিখ</p>
+                    <h4 id="hijri-date" class="text-xl font-bold accent-text">-- রমজান</h4>
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-[9px] uppercase font-bold opacity-40 ml-2">সঞ্চয় (স্বর্ণ/রৌপ্য/ব্যাংক)</label>
-                        <input type="number" id="cash-val" oninput="calculateZakat()" placeholder="মোট টাকা ৳" class="calculator-input w-full p-4 rounded-2xl text-white" inputmode="numeric">
-                    </div>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold opacity-40 ml-2">ব্যবসায়িক পণ্য ও বিনিয়োগ</label>
-                        <input type="number" id="invest-val" oninput="calculateZakat()" placeholder="যদি থাকে ৳" class="calculator-input w-full p-4 rounded-2xl text-white" inputmode="numeric">
-                    </div>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold opacity-40 ml-2 text-rose-400">মোট ঋণ (পরিশোধ বাকি)</label>
-                        <input type="number" id="debt-val" oninput="calculateZakat()" placeholder="ঋণের টাকা ৳" class="calculator-input w-full p-4 rounded-2xl text-white" inputmode="numeric">
-                    </div>
-                </div>
-
-                <div class="bg-emerald-500/10 rounded-[2rem] p-6 flex flex-col justify-center items-center text-center border border-emerald-500/20">
-                    <p class="text-xs opacity-60 mb-1">প্রদেয় জাকাত</p>
-                    <h2 id="zakat-due" class="text-4xl md:text-5xl font-black text-white">৳ ০</h2>
-                    <div class="w-1/2 h-[1px] bg-white/10 my-3"></div>
-                    <p id="nisab-status" class="text-[9px] opacity-40 italic">নিসাব পরিমাণ সম্পদ হলে জাকাত ফরজ</p>
-                </div>
+            <div class="glass-card p-6 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl accent-bg/20 flex items-center justify-center accent-text"><i class="fas fa-location-dot"></i></div>
+                <div><h4 class="font-bold">খুলনা, বাংলাদেশ</h4><p class="text-xs opacity-60">ঢাকা থেকে ৩ মিনিট পর (ইফতার)</p></div>
             </div>
         </section>
 
-        <!-- Deed Tracker & Mood -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="glass-card p-5 rounded-[2rem] col-span-1 sm:col-span-2">
-                <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
-                    <h3 class="font-bold text-sm">আজকের নেক আমল</h3>
-                    <span class="text-[9px] bg-white/10 px-2 py-1 rounded-full text-emerald-400 font-bold" id="streak-count">০ দিন 🔥</span>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="toggleDeed(this)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all">
-                        <i class="far fa-circle text-[10px]"></i> ৫ ওয়াক্ত
-                    </button>
-                    <button onclick="toggleDeed(this)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all">
-                        <i class="far fa-circle text-[10px]"></i> কুরআন
-                    </button>
-                    <button onclick="toggleDeed(this)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all">
-                        <i class="far fa-circle text-[10px]"></i> দান
-                    </button>
-                </div>
-            </div>
-            
-            <div class="glass-card p-5 rounded-[2rem] bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border-indigo-500/20 flex flex-col justify-between">
-                <div>
-                    <h4 class="font-bold text-sm mb-1">✨ আজ মন কেমন?</h4>
-                    <p class="text-[9px] opacity-60">জিকির বেছে নিন</p>
-                </div>
-                <select id="mood-select" onchange="generateMoodDhikr()" class="bg-slate-900/50 border border-white/10 rounded-xl p-2.5 mt-2 text-xs outline-none w-full">
-                    <option value="">নির্বাচন করুন...</option>
-                    <option value="happy">খুশি</option>
-                    <option value="sad">উদ্বিগ্ন</option>
-                    <option value="tired">ক্লান্ত</option>
-                    <option value="guilty">অনুতপ্ত</option>
-                </select>
-            </div>
-        </section>
+        <!-- Navigation Tabs -->
+        <div class="flex p-1.5 glass-card rounded-2xl border-white/5 items-center justify-between text-[11px] font-bold uppercase tracking-wider overflow-hidden">
+            <button onclick="switchStage('rahmat')" id="btn-rahmat" class="tab-btn flex-1 py-3 text-center active text-emerald-400">রহমত</button>
+            <button onclick="switchStage('magfirat')" id="btn-magfirat" class="tab-btn flex-1 py-3 text-center text-slate-400">মাগফিরাত</button>
+            <button onclick="switchStage('najat')" id="btn-najat" class="tab-btn flex-1 py-3 text-center text-slate-400">নাজাত</button>
+        </div>
 
-        <!-- Calendar (responsive scroll) -->
-        <section class="glass-card rounded-[2rem] md:rounded-[2.5rem] overflow-hidden">
-            <div class="p-5 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                <h3 class="font-bold flex items-center gap-2 text-sm">
-                    <i class="fas fa-calendar-alt text-emerald-400"></i> ইবাদাত ক্যালেন্ডার (১০ দিন)
+        <!-- Schedule Table -->
+        <section class="glass-card overflow-hidden border-white/5 shadow-2xl">
+            <div class="p-5 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                <h3 class="font-bold flex items-center gap-2 text-sm" id="table-title">
+                    <i class="fas fa-calendar-alt accent-text"></i> রহমতের সময়সূচী (১-১০ রমজান)
                 </h3>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left cal-table">
-                    <thead class="bg-white/5 text-[9px] uppercase tracking-widest text-slate-500">
-                        <tr>
-                            <th class="p-3 md:p-5">রোজা</th>
-                            <th class="p-3 md:p-5">তারিখ</th>
-                            <th class="p-3 md:p-5">সেহরি</th>
-                            <th class="p-3 md:p-5">ইফতার</th>
-                            <th class="p-3 md:p-5 text-center">চেক</th>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-white/5 text-[9px] uppercase text-slate-400 tracking-widest">
+                            <th class="p-4 text-left font-black">রমজান</th>
+                            <th class="p-4 text-left font-black">তারিখ</th>
+                            <th class="p-4 text-left font-black">বার</th>
+                            <th class="p-4 text-left font-black">সেহরি</th>
+                            <th class="p-4 text-left font-black">ইফতার</th>
                         </tr>
                     </thead>
-                    <tbody id="cal-rows" class="divide-y divide-white/5 text-slate-300"></tbody>
+                    <tbody id="schedule-body" class="divide-y divide-white/5 text-slate-300"></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- AI Grid (4 cols responsive) -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <button onclick="openGeminiModal('recipe')" class="glass-card p-5 rounded-[2rem] hover:bg-emerald-500/10 group">
-                <div class="w-8 h-8 bg-orange-500/20 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-utensils text-orange-400 text-sm"></i>
-                </div>
-                <h4 class="font-bold text-[11px] leading-tight">ইফতার রেসিপি</h4>
-            </button>
-            <button onclick="openGeminiModal('ask')" class="glass-card p-5 rounded-[2rem] hover:bg-emerald-500/10 group">
-                <div class="w-8 h-8 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-comment-dots text-emerald-400 text-sm"></i>
-                </div>
-                <h4 class="font-bold text-[11px] leading-tight">মাসআলা জানুন</h4>
-            </button>
-            <button onclick="openGeminiModal('letter')" class="glass-card p-5 rounded-[2rem] hover:bg-emerald-500/10 group">
-                <div class="w-8 h-8 bg-rose-500/20 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-envelope text-rose-400 text-sm"></i>
-                </div>
-                <h4 class="font-bold text-[11px] leading-tight">চিঠি লিখুন</h4>
-            </button>
-            <button onclick="openGeminiModal('dua')" class="glass-card p-5 rounded-[2rem] hover:bg-emerald-500/10 group">
-                <div class="w-8 h-8 bg-blue-500/20 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-hands-praying text-blue-400 text-sm"></i>
-                </div>
-                <h4 class="font-bold text-[11px] leading-tight">দোয়া ও জিকির</h4>
-            </button>
-        </section>
-
-        <!-- Donation & belief -->
-        <section class="glass-card p-6 rounded-[2.5rem] bg-gradient-to-br from-emerald-950/20 to-slate-900/40 relative overflow-hidden">
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-3 text-center md:text-left">
-                    <h2 class="text-xl md:text-2xl font-bold">একটি দান <br><span class="text-emerald-400">একটি নতুন স্বপ্ন।</span></h2>
-                    <p class="text-sm opacity-80">আপনার ছোট সহযোগিতাই কারো ইফতার নিশ্চিত করে</p>
-                    <button onclick="openDonateModal()" class="bg-[#e2136e] hover:bg-[#c0105d] text-white px-8 py-4 rounded-2xl font-bold shadow-2xl flex items-center gap-2 active:scale-95 transition-all mx-auto md:mx-0 text-sm">
-                        বিকাশে দান করুন <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-                <div class="bg-white/5 border border-white/10 rounded-[2rem] p-5 space-y-3 max-w-xs">
-                    <blockquote class="text-base font-semibold text-emerald-400 leading-tight">
-                        “একটি নীরব দাওয়াত”
-                    </blockquote>
-                    <p class="text-xs opacity-70">
-                        ইফতারের সময় যেন কোনো অসহায় মুখ খালি না থাকে। এক কাপ চায়ের দামে একজন পথশিশুর ইফতার নিশ্চিত করুন।
-                    </p>
-                    <div class="w-12 h-[1px] bg-white/20 mx-auto"></div>
-                    <p class="text-[10px] italic opacity-80">“যে আল্লাহর পথে দান করে, আল্লাহ তার প্রতিদান বাড়িয়ে দেন।”</p>
-                </div>
-                <div class="hidden md:flex flex-col items-center">
-                    <div class="flex -space-x-3">
-                        <img src="https://i.pravatar.cc/100?u=1" class="w-10 h-10 rounded-full border-2 border-slate-900">
-                        <img src="https://i.pravatar.cc/100?u=2" class="w-10 h-10 rounded-full border-2 border-slate-900">
-                    </div>
-                    <p id="donationCount" class="text-[9px] mt-2 opacity-40 uppercase font-bold"></p>
-                </div>
-            </div>
-        </section>
-
-        <footer class="text-center py-6 opacity-30 text-[9px] tracking-widest font-bold">
-            DESIGNED & DEVELOPED BY <span class="text-emerald-400">BIOZED HOSEN</span>
+        <footer class="text-center py-6">
+            <p class="text-[9px] opacity-40 font-bold tracking-[0.2em] uppercase">ডিজাইন ও ডেভেলপমেন্ট: বায়োজেদ হোসাইন | খুলনা এডিশন</p>
         </footer>
     </main>
 
-    <!-- Navigation (with safe area) -->
-    <nav class="fixed bottom-0 left-0 right-0 z-[100] px-6 py-3 flex justify-around items-center bg-slate-950/90 backdrop-blur-xl border-t border-white/5 rounded-t-[2rem] pb-safe">
-        <button onclick="changeTab('rahmah')" id="nav-rahmah" class="nav-item active flex flex-col items-center gap-0.5">
-            <i class="fas fa-cloud-sun text-lg"></i>
-            <span class="text-[8px] font-black uppercase">রহমত</span>
-        </button>
-        <button onclick="changeTab('magfirah')" id="nav-magfirah" class="nav-item flex flex-col items-center gap-0.5">
-            <i class="fas fa-hands-praying text-lg"></i>
-            <span class="text-[8px] font-black uppercase">মাগফিরাত</span>
-        </button>
-        <button onclick="changeTab('najat')" id="nav-najat" class="nav-item flex flex-col items-center gap-0.5">
-            <i class="fas fa-kaaba text-lg"></i>
-            <span class="text-[8px] font-black uppercase">নাজাত</span>
-        </button>
+    <!-- Bottom Navbar -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
+        <div class="glass-card p-3 flex justify-around items-center border-white/20 shadow-2xl bg-slate-900/90">
+            <div class="text-center">
+                <p class="text-[8px] opacity-50 uppercase font-black">খুলনা সূর্যাস্ত</p>
+                <p id="nav-iftar" class="text-xs font-bold text-rose-400">--:--</p>
+            </div>
+            <div class="w-[1px] h-6 bg-white/10"></div>
+            <div class="text-center">
+                <p class="text-[8px] opacity-50 uppercase font-black">খুলনা ফজরের আজান</p>
+                <p id="nav-sehri" class="text-xs font-bold text-emerald-400">--:--</p>
+            </div>
+        </div>
     </nav>
 
-    <!-- Gemini Modal -->
-    <div id="gemini-modal" class="fixed inset-0 bg-slate-950/98 z-[200] hidden flex items-center justify-center p-3 backdrop-blur-3xl">
-        <div class="glass-card w-full max-w-xl rounded-[2.5rem] overflow-hidden max-h-[90vh] flex flex-col">
-            <div class="p-5 border-b border-white/5 flex justify-between items-center">
-                <h3 id="gemini-title" class="font-bold">AI জেনারেটর</h3>
-                <button onclick="closeGeminiModal()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center"><i class="fas fa-times text-sm"></i></button>
-            </div>
-            <div class="p-5 space-y-4 overflow-y-auto">
-                <div id="gemini-input-area" class="space-y-3">
-                    <textarea id="gemini-input" class="w-full p-4 bg-slate-900 border border-white/10 rounded-2xl outline-none focus:border-emerald-500 h-32 text-sm" placeholder="এখানে লিখুন..."></textarea>
-                </div>
-                <div id="gemini-response" class="hidden p-5 bg-emerald-500/5 rounded-2xl border border-emerald-500/20 text-sm leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap"></div>
-                <button onclick="callGemini()" id="gemini-submit-btn" class="w-full py-4 rounded-xl font-black bg-emerald-600 shadow-xl flex items-center justify-center gap-3 text-sm">
-                    <span id="btn-text">জেনারেট করুন ✨</span>
-                    <div id="loading" class="loading-spinner hidden"></div>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Donate Modal -->
-    <div id="donate-modal" class="fixed inset-0 bg-slate-950/98 z-[210] hidden flex items-center justify-center p-3 backdrop-blur-3xl">
-        <div class="glass-card w-full max-w-md rounded-[2.5rem] p-6 text-center space-y-5 text-white max-h-[90vh] overflow-y-auto">
-            <img src="https://freelogopng.com/images/all_img/1656235223bkash-logo.png" class="h-8 mx-auto">
-            <p class="text-xs opacity-70">bKash নাম্বারে <b>Send Money</b> করুন</p>
-            <p id="bkash-number" class="text-base font-bold mt-2 opacity-90 bg-white/10 rounded-xl p-3 cursor-pointer select-all" title="কপি করতে ক্লিক করুন">--</p>
-            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
-                <blockquote class="text-base font-semibold leading-relaxed">“এই ক্যালেন্ডারটি কারো ইফতারের সময় নিশ্চিত করার একটি ছোট চেষ্টা।”</blockquote>
-                <p class="text-xs opacity-70">এক কাপ কফির দামে একজন পথশিশুর ইফতার নিশ্চিত করুন।</p>
-                <div class="w-12 h-[1px] bg-white/20 mx-auto"></div>
-                <p class="text-[10px] italic opacity-80">“যে আল্লাহর পথে দান করে, আল্লাহ তার প্রতিদান বাড়িয়ে দেন।”</p>
-            </div>
-            <p class="text-sm font-semibold opacity-80">দানের উদ্দেশ্য</p>
-            <div class="grid grid-cols-1 gap-2">
-                <button onclick="showNumber('01911594822', 'এতিমখানায় সহায়তা')" class="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-[#e2136e] font-bold text-sm">এতিমখানায় সহায়তা</button>
-                <button onclick="showNumber('01400300234', 'মসজিদ নির্মাণ')" class="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-[#e2136e] font-bold text-sm">মসজিদ নির্মাণ</button>
-                <button onclick="showNumber('01717196469', 'ইফতার পথশিশুদের')" class="p-3 bg-[#e2136e]/20 border border-[#e2136e]/40 rounded-xl font-bold text-sm">ইফতার পথশিশুদের ☕</button>
-            </div>
-            <p id="donation-purpose" class="text-xs opacity-70"></p>
-            <p class="text-[9px] opacity-50">bKash → Send Money → নাম্বার → Amount → Reference</p>
-            <p class="text-[8px] opacity-40">⚠ ব্যক্তিগত নাম্বার, স্বয়ংক্রিয় নয়।</p>
-            <button onclick="closeDonateModal()" class="text-[9px] uppercase opacity-40 font-bold">বন্ধ করুন</button>
-        </div>
-    </div>
-
     <script>
-        (function() {
-            // ---- Bangladesh Ramadan 2026: 1 Ramadan = 19 Feb 2026 (based on usual announcement)
-            const apiKey = "AIzaSyA2D6oZPpSIkdevQeWnNdBSB4_6M81j1v0"; 
-            let currentStage = 'rahmah';
-            let currentAiMode = 'ask';
-            let completedFasts = JSON.parse(localStorage.getItem('fasts_2026_bd')) || [];
+        const ramadanData = {
+            rahmat: [
+                { r: 1, date: "১৯ ফেব", day: "বৃহস্পতি", sehri: "05:18", iftar: "18:04", isoDate: "2026-02-19" },
+                { r: 2, date: "২০ ফেব", day: "শুক্র", sehri: "05:17", iftar: "18:04", isoDate: "2026-02-20" },
+                { r: 3, date: "২১ ফেব", day: "শনি", sehri: "05:16", iftar: "18:05", isoDate: "2026-02-21" },
+                { r: 4, date: "২২ ফেব", day: "রবি", sehri: "05:15", iftar: "18:05", isoDate: "2026-02-22" },
+                { r: 5, date: "২৩ ফেব", day: "সোম", sehri: "05:14", iftar: "18:06", isoDate: "2026-02-23" },
+                { r: 6, date: "২৪ ফেব", day: "মঙ্গল", sehri: "05:13", iftar: "18:06", isoDate: "2026-02-24" },
+                { r: 7, date: "২৫ ফেব", day: "বুধ", sehri: "05:12", iftar: "18:07", isoDate: "2026-02-25" },
+                { r: 8, date: "২৬ ফেব", day: "বৃহস্পতি", sehri: "05:11", iftar: "18:07", isoDate: "2026-02-26" },
+                { r: 9, date: "২৭ ফেব", day: "শুক্র", sehri: "05:10", iftar: "18:08", isoDate: "2026-02-27" },
+                { r: 10, date: "২৮ ফেব", day: "শনি", sehri: "05:09", iftar: "18:08", isoDate: "2026-02-28" }
+            ],
+            magfirat: [
+                { r: 11, date: "১ মার্চ", day: "রবি", sehri: "05:08", iftar: "18:09", isoDate: "2026-03-01" },
+                { r: 12, date: "২ মার্চ", day: "সোম", sehri: "05:07", iftar: "18:09", isoDate: "2026-03-02" },
+                { r: 13, date: "৩ মার্চ", day: "মঙ্গল", sehri: "05:06", iftar: "18:10", isoDate: "2026-03-03" },
+                { r: 14, date: "৪ মার্চ", day: "বুধ", sehri: "05:05", iftar: "18:10", isoDate: "2026-03-04" },
+                { r: 15, date: "৫ মার্চ", day: "বৃহস্পতি", sehri: "05:04", iftar: "18:11", isoDate: "2026-03-05" },
+                { r: 16, date: "৬ মার্চ", day: "শুক্র", sehri: "05:03", iftar: "18:11", isoDate: "2026-03-06" },
+                { r: 17, date: "৭ মার্চ", day: "শনি", sehri: "05:02", iftar: "18:12", isoDate: "2026-03-07" },
+                { r: 18, date: "৮ মার্চ", day: "রবি", sehri: "05:01", iftar: "18:12", isoDate: "2026-03-08" },
+                { r: 19, date: "৯ মার্চ", day: "সোম", sehri: "05:00", iftar: "18:13", isoDate: "2026-03-09" },
+                { r: 20, date: "১০ মার্চ", day: "মঙ্গল", sehri: "04:59", iftar: "18:13", isoDate: "2026-03-10" }
+            ],
+            najat: [
+                { r: 21, date: "১১ মার্চ", day: "বুধ", sehri: "04:58", iftar: "18:14", isoDate: "2026-03-11" },
+                { r: 22, date: "১২ মার্চ", day: "বৃহস্পতি", sehri: "04:57", iftar: "18:14", isoDate: "2026-03-12" },
+                { r: 23, date: "১৩ মার্চ", day: "শুক্র", sehri: "04:56", iftar: "18:15", isoDate: "2026-03-13" },
+                { r: 24, date: "১৪ মার্চ", day: "শনি", sehri: "04:55", iftar: "18:15", isoDate: "2026-03-14" },
+                { r: 25, date: "১৫ মার্চ", day: "রবি", sehri: "04:54", iftar: "18:16", isoDate: "2026-03-15" },
+                { r: 26, date: "১৬ মার্চ", day: "সোম", sehri: "04:53", iftar: "18:16", isoDate: "2026-03-16" },
+                { r: 27, date: "১৭ মার্চ", day: "মঙ্গল", sehri: "04:52", iftar: "18:17", isoDate: "2026-03-17" },
+                { r: 28, date: "১৮ মার্চ", day: "বুধ", sehri: "04:51", iftar: "18:17", isoDate: "2026-03-18" },
+                { r: 29, date: "১৯ মার্চ", day: "বৃহস্পতি", sehri: "04:50", iftar: "18:18", isoDate: "2026-03-19" },
+                { r: 30, date: "২০ মার্চ", day: "শুক্র", sehri: "04:49", iftar: "18:18", isoDate: "2026-03-20" }
+            ]
+        };
 
-            // hadith collections
-            const hadithData = {
-                rahmah: [
-                    { text: "রমজানের শুরু রহমত, মধ্যভাগ মাগফিরাত এবং শেষভাগ জাহান্নাম থেকে মুক্তি।", ref: "বায়হাকী, মিশকাত" },
-                    { text: "যে ব্যক্তি ঈমানের সাথে ও সওয়াবের আশায় রমজানের রোজা রাখে, তার পূর্ববর্তী সব গুনাহ ক্ষমা করে দেয়া হয়।", ref: "বুখারী ও মুসলিম" }
-                ],
-                magfirah: [
-                    { text: "ইফতারের সময় রোজাদারের দোয়া ফিরিয়ে দেয়া হয় না।", ref: "ইবনে মাজাহ" },
-                    { text: "রোজা ঢাল স্বরূপ। সুতরাং রোজা রেখে অশ্লীল কথা বলবে না।", ref: "সহীহ বুখারী" }
-                ],
-                najat: [
-                    { text: "তোমরা শেষ দশকে লাইলাতুল কদর তালাশ করো।", ref: "সহীহ বুখারী" },
-                    { text: "রোজাদারের মুখের ঘ্রাণ আল্লাহর কাছে মিশক আম্বরের চেয়েও অধিক প্রিয়।", ref: "সহীহ বুখারী" }
-                ]
-            };
+        const hadiths = [
+            { text: "যে ব্যক্তি রমজান মাসে ঈমানের সাথে সওয়াবের আশায় রোজা রাখে, তার পূর্ববর্তী সকল গুনাহ ক্ষমা করে দেয়া হয়।", ref: "বুখারী ও মুসলিম" },
+            { text: "রোজা হচ্ছে ঢাল স্বরূপ। সুতরাং রোজা রেখে অশ্লীল কথা বলবে না এবং মূর্খের মতো কাজ করবে না।", ref: "সহীহ বুখারী" },
+            { text: "রোজাদারের জন্য দুটি আনন্দ রয়েছে: একটি যখন সে ইফতার করে এবং অন্যটি যখন সে তার রবের সাথে সাক্ষাৎ করবে।", ref: "মুসলিম" },
+            { text: "রোজাদারের মুখের গন্ধ আল্লাহর নিকট মিশক আম্বরের সুগন্ধির চেয়েও অধিক প্রিয়।", ref: "বুখারী" },
+            { text: "রোজা রাখো, সুস্থ থাকবে।", ref: "তাবরানী" },
+            { text: "জান্নাতের একটি দরজা আছে যার নাম 'রাইয়ান'। কিয়ামতের দিন রোজাদারগণ ব্যতীত আর কেউ সেই দরজা দিয়ে প্রবেশ করবে না।", ref: "বুখারী" },
+            { text: "ইফতারের সময় রোজাদারের দু’আ ফিরিয়ে দেওয়া হয় না।", ref: "ইবনে মাজাহ" },
+            { text: "তোমরা সেহরি খাও, কারণ সেহরিতে বরকত রয়েছে।", ref: "বুখারী ও মুসলিম" },
+            { text: "যে ব্যক্তি আল্লাহর পথে একদিন রোজা রাখে, আল্লাহ তার থেকে জাহান্নামকে সত্তর বছরের দূরত্বে সরিয়ে দেন।", ref: "মুসলিম" },
+            { text: "আল্লাহ তায়ালা বলেন: রোজা কেবল আমারই জন্য, আর আমি নিজেই এর প্রতিদান দেব।", ref: "বুখারী" },
+            { text: "রমজান মাসের শেষ দশ দিনের বিজোড় রাতগুলোতে তোমরা লাইলাতুল কদর তালাশ করো।", ref: "বুখারী" },
+            { text: "রমজানের ওমরাহ একটি হজ্জের সমতুল্য।", ref: "বুখারী" },
+            { text: "মানুষ ততক্ষণ পর্যন্ত কল্যাণের উপর থাকবে যতক্ষণ তারা দ্রুত ইফতার করবে।", ref: "বুখারী ও মুসলিম" },
+            { text: "যে ব্যক্তি মিথ্যা কথা ও মন্দ কাজ ত্যাগ করল না, তার পানাহার ত্যাগ করায় আল্লাহর কোনো প্রয়োজন নেই।", ref: "বুখারী" },
+            { text: "রমজানের আগমনে জান্নাতের দরজা খুলে দেয়া হয় এবং জাহান্নামের দরজা বন্ধ করে দেয়া হয়।", ref: "মুসলিম" },
+            { text: "প্রতিটি বস্তুরই যাকাত রয়েছে, আর শরীরের যাকাত হলো রোজা।", ref: "ইবনে মাজাহ" },
+            { text: "সেহরি এবং ইফতারের মধ্যবর্তী সময়ে দু'আ কবুল হয়।", ref: "নাসাঈ" },
+            { text: "রোজাদারকে ইফতার করালে ইফতারকারীর সমান সওয়াব পাওয়া যায়, তবে ইফতারকারীর সওয়াব কমবে না।", ref: "তিরমিযী" },
+            { text: "যে ব্যক্তি রমজানের একটি রোজা ওজব ছাড়া ভঙ্গ করল, সারা জীবনের রোজাও তার ক্ষতিপূরণ হবে না।", ref: "আবু দাউদ" },
+            { text: "রোজা ও কুরআন কিয়ামতের দিন বান্দার জন্য সুপারিশ করবে।", ref: "মুসনাদে আহমাদ" },
+            { text: "রমজানের শেষ দশকে রাসুল (সা.) ইবাদতে এতোটা পরিশ্রম করতেন যা অন্য সময় করতেন না।", ref: "মুসলিম" },
+            { text: "লাইলাতুল কদর এক হাজার মাসের চেয়ে উত্তম।", ref: "কুরআন (সূরা কদর)" },
+            { text: "তোমাদের মধ্যে সর্বোত্তম সে, যে কুরআন শিখে এবং অন্যকে শেখায়।", ref: "বুখারী" },
+            { text: "মিসওয়াক করা রোজাদারের জন্য সুন্নত এবং এটি মুখের পবিত্রতা।", ref: "বুখারী" },
+            { text: "আল্লাহ তায়ালা রমজানের প্রতি রাতে অসংখ্য মানুষকে জাহান্নাম থেকে মুক্তি দেন।", ref: "আহমদ" },
+            { text: "পবিত্রতা ঈমানের অঙ্গ।", ref: "মুসলিম" },
+            { text: "দান সদকা সম্পদ কমায় না, বরং বরকত বৃদ্ধি করে।", ref: "মুসলিম" },
+            { text: "মুমিনের নিয়ত তার আমলের চেয়েও উত্তম।", ref: "তাবরানী" },
+            { text: "রমজানের শেষ রাতে আল্লাহ তায়ালা তার সকল নেক বান্দাকে ক্ষমা করে দেন।", ref: "মুসনাদে আহমাদ" },
+            { text: "ফিতরা আদায় করা সামর্থ্যবান প্রত্যেক মুসলমানের জন্য ওয়াজিব।", ref: "বুখারী ও মুসলিম" }
+        ];
 
-            // ---- Updated calendar: 1 Ramadan = Feb 19, 2026 (Bangladesh time)
-            function generateRamadanDates() {
-                const startDate = new Date(2026, 1, 19); // Feb 19 2026
-                const bdOffset = 6 * 60 * 60 * 1000; // UTC+6
-                const rahmahDays = [], magfirahDays = [], najatDays = [];
+        let currentStage = 'rahmat';
+        const allDays = [...ramadanData.rahmat, ...ramadanData.magfirat, ...ramadanData.najat];
 
-                for (let i = 0; i < 10; i++) {
-                    let d = new Date(startDate.getTime() + i * 86400000);
-                    let day = i + 1;
-                    let dateStr = d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }).replace('ফেব', 'ফেব্রু');
-                    if (i === 9) dateStr = '১ মার্চ'; // ensure consistency
-                    // approximate sehri/iftar times for Dhaka (adjust slightly)
-                    let sTime = `${String(4 + Math.floor(i/3)).padStart(2,'0')}:${40 - i*2}`.slice(0,5);
-                    let iTime = `18:${10 + i}`.slice(0,5);
-                    rahmahDays.push({ d: day, date: dateStr, s: sTime.padStart(5,'0'), i: iTime.padStart(5,'0') });
-                }
-                for (let i = 10; i < 20; i++) {
-                    let d = new Date(startDate.getTime() + i * 86400000);
-                    let day = i + 1;
-                    let dateStr = d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-                    magfirahDays.push({ d: day, date: dateStr, s: '০৪:৩০', i: '১৮:২০' });
-                }
-                for (let i = 20; i < 30; i++) {
-                    let d = new Date(startDate.getTime() + i * 86400000);
-                    let day = i + 1;
-                    let dateStr = d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-                    najatDays.push({ d: day, date: dateStr, s: '০৪:২০', i: '১৮:৩০' });
-                }
-                return { rahmah: rahmahDays, magfirah: magfirahDays, najat: najatDays };
+        function toBnNum(num) {
+            return num.toString().replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+        }
+
+        function openDonateModal() { document.getElementById('donate-modal').classList.remove('hidden'); }
+        function closeDonateModal() { document.getElementById('donate-modal').classList.add('hidden'); }
+
+        function showNumber(number, purpose) {
+            const numEl = document.getElementById('bkash-number');
+            numEl.innerText = number;
+            document.getElementById('donation-purpose').innerText = "উদ্দেশ্য: " + purpose;
+            
+            const tempInput = document.createElement("input");
+            tempInput.value = number;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            numEl.innerHTML = number + ' <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded ml-2">কপি করা হয়েছে!</span>';
+        }
+
+        function switchStage(stage) {
+            currentStage = stage;
+            const body = document.getElementById('body-tag');
+            body.className = `pb-24 theme-${stage}`;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-emerald-400', 'text-amber-400', 'text-rose-400', 'text-slate-400'));
+            const btn = document.getElementById(`btn-${stage}`);
+            btn.classList.add('active');
+
+            if(stage === 'rahmat') {
+                btn.classList.add('text-emerald-400');
+                document.getElementById('stage-badge').innerText = "রহমতের দশক (১-১০ রমজান)";
+                document.getElementById('stage-arabic').innerText = "رحمة الله الواسعة";
+            } else if(stage === 'magfirat') {
+                btn.classList.add('text-amber-400');
+                document.getElementById('stage-badge').innerText = "মাগফিরাতের দশক (১১-২০ রমজান)";
+                document.getElementById('stage-arabic').innerText = "مغفرة من الله ورضوان";
+            } else {
+                btn.classList.add('text-rose-400');
+                document.getElementById('stage-badge').innerText = "নাজাতের দশক (২১-৩০ রমজান)";
+                document.getElementById('stage-arabic').innerText = "العتق من النار";
             }
 
-            const calendarData = generateRamadanDates();
-
-            function updateDailyHadith(stage) {
-                const hadiths = hadithData[stage];
-                const index = new Date().getDate() % hadiths.length;
-                const hadith = hadiths[index];
-                document.getElementById('hadith-text').innerText = `"${hadith.text}"`;
-                document.getElementById('hadith-ref').innerText = `— ${hadith.ref}`;
-            }
-
-            function calculateZakat() {
-                const cash = parseFloat(document.getElementById('cash-val').value) || 0;
-                const invest = parseFloat(document.getElementById('invest-val').value) || 0;
-                const debt = parseFloat(document.getElementById('debt-val').value) || 0;
-                const net = (cash + invest) - debt;
-                const due = net >= 80000 ? net * 0.025 : 0;
-                document.getElementById('zakat-due').innerText = `৳ ${Math.round(due).toLocaleString('bn-BD')}`;
-                const status = document.getElementById('nisab-status');
-                if (net >= 80000) {
-                    status.innerText = "আপনার ওপর জাকাত ফরজ।";
-                    status.className = "text-[9px] text-emerald-400 font-bold uppercase tracking-widest mt-4";
-                } else {
-                    status.innerText = "সম্পদ নিসাব পরিমাণ নয়।";
-                    status.className = "text-[9px] opacity-40 italic mt-4";
-                }
-            }
-
-            function toggleDeed(btn) {
-                btn.classList.toggle('bg-emerald-500/20');
-                const icon = btn.querySelector('i');
-                if (icon.classList.contains('fa-circle')) {
-                    icon.classList.remove('far', 'fa-circle');
-                    icon.classList.add('fas', 'fa-check-circle');
-                } else {
-                    icon.classList.remove('fas', 'fa-check-circle');
-                    icon.classList.add('far', 'fa-circle');
-                }
-            }
-
-            function populateCalendar(stage) {
-                const tbody = document.getElementById('cal-rows');
-                tbody.innerHTML = '';
-                calendarData[stage].forEach(row => {
-                    const isDone = completedFasts.includes(row.d);
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="p-3 md:p-5 font-bold text-emerald-400 text-xs md:text-sm">#${row.d} রমজান</td>
-                        <td class="p-3 md:p-5 text-xs md:text-sm">${row.date}</td>
-                        <td class="p-3 md:p-5 font-mono text-[11px] md:text-xs">${row.s}</td>
-                        <td class="p-3 md:p-5 font-mono text-[11px] md:text-xs text-rose-400">${row.i}</td>
-                        <td class="p-3 md:p-5 text-center">
-                            <button onclick="toggleFast(${row.d})" class="check-btn ${isDone ? 'done' : ''}">
-                                ${isDone ? '<i class="fas fa-check text-white text-[10px]"></i>' : ''}
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            window.toggleFast = function(day) {
-                if(completedFasts.includes(day)) completedFasts = completedFasts.filter(d => d !== day);
-                else completedFasts.push(day);
-                localStorage.setItem('fasts_2026_bd', JSON.stringify(completedFasts));
-                populateCalendar(currentStage);
-                document.getElementById('streak-count').innerText = `${completedFasts.length} দিন 🔥`;
-            };
-
-            function changeTab(stage) {
-                currentStage = stage;
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.getElementById(`nav-${stage}`).classList.add('active');
-                document.body.className = `theme-${stage} pb-36 md:pb-32`;
-                populateCalendar(stage);
-                updateDailyHadith(stage);
-                
-                const names = { rahmah: 'রহমতের দশক', magfirah: 'মাগফিরাতের দশক', najat: 'নাজাতের দশক' };
-                document.getElementById('app-title').innerText = names[stage] + ' | ' + (stage === 'rahmah' ? 'رحمة' : (stage === 'magfirah' ? 'مغفرة' : 'نجاة'));
-                document.getElementById('arabic-status').innerHTML = stage === 'rahmah' ? 'রমজানের প্রথম দশক — দয়া ও রহমত' : (stage === 'magfirah' ? 'মাগফিরাতের দশক — ক্ষমা' : 'নাজাতের দশক — মুক্তি');
-            }
-
-            function updateClock() {
-                const now = new Date();
-                const bdTime = new Date(now.getTime() + (6 * 60 * 60 * 1000) - (now.getTimezoneOffset() * 60000));
-                const hours = bdTime.getUTCHours().toString().padStart(2,'0');
-                const mins = bdTime.getUTCMinutes().toString().padStart(2,'0');
-                const secs = bdTime.getUTCSeconds().toString().padStart(2,'0');
-                document.getElementById('countdown-timer').innerText = `${hours}:${mins}:${secs}`;
-
-                const target = new Date(bdTime);
-                target.setUTCHours(18, 10, 0); // iftar approx 6:10 PM BD
-                if (bdTime > target) target.setUTCDate(target.getUTCDate() + 1);
-                const diff = target - bdTime;
-                const pct = Math.max(0, Math.min(100, (1 - (diff / (14 * 3600000))) * 100));
-                document.getElementById('progress-ring').style.strokeDashoffset = 100 - pct;
-                document.getElementById('fasting-progress').innerText = Math.round(pct) + '%';
-            }
-
-            function openDonateModal() { document.getElementById('donate-modal').classList.remove('hidden'); }
-            window.closeDonateModal = function() { document.getElementById('donate-modal').classList.add('hidden'); }
-
-            window.openGeminiModal = function(mode) {
-                currentAiMode = mode;
-                document.getElementById('gemini-modal').classList.remove('hidden');
-                document.getElementById('gemini-response').classList.add('hidden');
-                document.getElementById('gemini-input-area').classList.remove('hidden');
-                document.getElementById('gemini-input').value = '';
-                let title = "AI সাহায্য";
-                if (mode === 'recipe') title = "ইফতার রেসিপি";
-                else if (mode === 'ask') title = "ধর্মীয় প্রশ্ন";
-                else if (mode === 'letter') title = "চিঠি লিখুন";
-                else if (mode === 'dua') title = "দোয়া ও জিকির";
-                document.getElementById('gemini-title').innerText = title;
-            };
-
-            window.closeGeminiModal = function() { document.getElementById('gemini-modal').classList.add('hidden'); };
-
-            async function callGemini() {
-                const input = document.getElementById('gemini-input').value;
-                if(!input) return;
-                document.getElementById('loading').classList.remove('hidden');
-                document.getElementById('btn-text').classList.add('hidden');
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: `Ramadan Assistant (${currentAiMode}) for Bangladesh: ${input} (answer in Bangla)` }] }] })
-                    });
-                    const data = await response.json();
-                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "দুঃখিত, আবার চেষ্টা করুন।";
-                    const respDiv = document.getElementById('gemini-response');
-                    respDiv.innerText = text;
-                    respDiv.classList.remove('hidden');
-                    document.getElementById('gemini-input-area').classList.add('hidden');
-                } catch (e) {
-                    alert("AI connection error.");
-                } finally {
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('btn-text').classList.remove('hidden');
-                }
-            }
-            window.callGemini = callGemini;
-
-            window.generateMoodDhikr = function() {
-                const mood = document.getElementById('mood-select').value;
-                if(!mood) return;
-                openGeminiModal('dua');
-                document.getElementById('gemini-input').value = `${mood} অবস্থায় ছোট দোয়া বা জিকির কী হতে পারে? (বাংলায়)`;
-                setTimeout(callGemini, 300);
-            };
-
-            function showNumber(number, purpose) {
-                const el = document.getElementById('bkash-number');
-                el.innerText = number;
-                el.style.backgroundColor = '#e2136e';
-                el.style.color = '#fff';
-                document.getElementById('donation-purpose').innerText = "আপনি বেছে নিয়েছেন: " + purpose;
-            }
-            window.showNumber = showNumber;
-
-            // donation count localstorage
-            (function() {
-                const MIN = 26, MAX = 80;
-                const today = new Date().toDateString();
-                const saved = localStorage.getItem('donation_day_bd');
-                let count = localStorage.getItem('donation_count_bd');
-                if (saved !== today || !count) {
-                    count = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
-                    localStorage.setItem('donation_day_bd', today);
-                    localStorage.setItem('donation_count_bd', count);
-                }
-                document.getElementById('donationCount').innerText = `🌟 আজ ${count}+ জন দান করেছেন`;
-            })();
-
-            // copy bkash
-            document.getElementById('bkash-number')?.addEventListener('click', function() {
-                if(this.innerText.trim() && this.innerText !== '--') {
-                    navigator.clipboard.writeText(this.innerText.trim()).then(() => alert('কপি হয়েছে!'));
-                }
+            const tbody = document.getElementById('schedule-body');
+            tbody.innerHTML = '';
+            ramadanData[stage].forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold accent-text">#${toBnNum(item.r)}</td>
+                    <td class="p-4">${item.date}</td>
+                    <td class="p-4 opacity-60 text-xs">${item.day}</td>
+                    <td class="p-4 font-mono">${toBnNum(item.sehri)}</td>
+                    <td class="p-4 font-mono font-bold text-rose-400">${toBnNum(item.iftar)}</td>
+                `;
+                tbody.appendChild(tr);
             });
+        }
 
-            window.onload = () => {
-                populateCalendar('rahmah');
-                updateDailyHadith('rahmah');
-                setInterval(updateClock, 1000);
-                document.getElementById('streak-count').innerText = `${completedFasts.length} দিন 🔥`;
-            };
+        function updateHadith(dayIndex) {
+            const index = Math.min(dayIndex - 1, hadiths.length - 1);
+            const currentHadith = hadiths[index >= 0 ? index : 0];
+            document.getElementById('hadith-day-label').innerText = "রমজান " + toBnNum(dayIndex > 0 ? dayIndex : 1);
+            document.getElementById('hadith-content').innerHTML = `“${currentHadith.text}”`;
+            document.getElementById('hadith-ref').innerText = "— " + currentHadith.ref;
+        }
 
-            // expose functions globally
-            window.changeTab = changeTab;
-            window.toggleDeed = toggleDeed;
-            window.calculateZakat = calculateZakat;
-            window.openDonateModal = openDonateModal;
-        })();
+        function updateClock() {
+            const now = new Date();
+            const todayISO = now.toISOString().split('T')[0];
+            let todayData = allDays.find(d => d.isoDate === todayISO) || allDays[0];
+
+            document.getElementById('today-sehri').innerText = toBnNum(todayData.sehri);
+            document.getElementById('today-iftar').innerText = toBnNum(todayData.iftar);
+            document.getElementById('nav-sehri').innerText = toBnNum(todayData.sehri);
+            document.getElementById('nav-iftar').innerText = toBnNum(todayData.iftar);
+            document.getElementById('hijri-date').innerText = toBnNum(todayData.r) + " রমজান";
+
+            // Update Hadith based on current Ramadan day
+            updateHadith(todayData.r);
+
+            const iftarParts = todayData.iftar.split(':');
+            const iftarTime = new Date();
+            iftarTime.setHours(parseInt(iftarParts[0]), parseInt(iftarParts[1]), 0);
+
+            let diff = iftarTime - now;
+            let label;
+
+            if (diff > 0) {
+                label = "ইফতারের বাকি সময়";
+            } else if (diff < 0 && diff > -1800000) {
+                document.getElementById('countdown-display').innerText = "আলহামদুলিল্লাহ, ইফতারের সময় হয়েছে!";
+                document.getElementById('countdown-display').classList.add('accent-text', 'pulse', 'text-2xl');
+                document.getElementById('countdown-label').innerText = "রমজান মোবারক";
+                return;
+            } else {
+                const tomorrowISO = new Date(now.getTime() + 86400000).toISOString().split('T')[0];
+                const nextDay = allDays.find(d => d.isoDate === tomorrowISO) || todayData;
+                const nextSehriTime = new Date();
+                nextSehriTime.setDate(now.getDate() + 1);
+                const p = nextDay.sehri.split(':');
+                nextSehriTime.setHours(parseInt(p[0]), parseInt(p[1]), 0);
+                label = "পরবর্তী সেহরির বাকি সময়";
+                diff = nextSehriTime - now;
+            }
+
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('countdown-label').innerText = label;
+            document.getElementById('countdown-display').classList.remove('text-2xl');
+            document.getElementById('countdown-display').innerText = 
+                `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        window.onload = () => {
+            switchStage('rahmat');
+            setInterval(updateClock, 1000);
+            updateClock();
+            const now = new Date();
+            const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+            document.getElementById('current-date-bn').innerText = toBnNum(now.getDate()) + " " + months[now.getMonth()] + " " + toBnNum(now.getFullYear());
+        };
     </script>
 </body>
 </html>
